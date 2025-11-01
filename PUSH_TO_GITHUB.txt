@@ -1,0 +1,16 @@
+عم # Commands to push to GitHub
+
+# 1. Add remote repository (replace with your GitHub URL)
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+
+# 2. Check branch name
+git branch
+
+# 3. Rename branch to main if needed
+git branch -M main
+
+# 4. Push to GitHub
+git push -u origin main
+
+# OR if you already have a repository and want to force push (be careful!)
+# git push -u origin main --force
