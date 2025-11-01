@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.example.driver_app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "26.1.10909125"  // Use stable NDK 26 instead of 27
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

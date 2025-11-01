@@ -97,7 +97,7 @@ class MyForegroundService : Service() {
                 json.put("longitude", lon)
                 json.put("speed", location.speed)
                 json.put("timestamp", System.currentTimeMillis())
-                val url = if (apiBase != null && busId != -1) "$apiBase/buses/$busId/update-location/" else null
+                val url = if (apiBase != null && busId != -1) "$apiBase/api/buses/$busId/update-location/" else null
                 if (url != null && authToken != null) {
                     android.util.Log.d("MyForegroundService", "Posting to: $url")
                     postLocation(url, authToken, json.toString())

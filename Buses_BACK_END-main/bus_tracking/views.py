@@ -2,8 +2,9 @@
 
 from rest_framework import viewsets, status
 from django.shortcuts import get_object_or_404
-from rest_framework.decorators import action, api_view # <-- IMPORT ADDED HERE
+from rest_framework.decorators import action, api_view, permission_classes # <-- IMPORT ADDED HERE
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from django.utils import timezone
 from .models import Bus, BusLine, BusStop, Location, BusLocationLog, Alert, BusLineStop
 from .serializers import (BusSerializer, BusLineSerializer, BusStopSerializer,
@@ -244,6 +245,7 @@ class BusViewSet(viewsets.ModelViewSet):
     queryset = Bus.objects.all()
     serializer_class = BusSerializer
 
+    @permission_classes([AllowAny])
     @action(detail=True, methods=['post'], url_path='update-location')
     def update_location(self, request, pk=None):
         bus = self.get_object()

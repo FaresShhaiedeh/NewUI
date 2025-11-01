@@ -228,8 +228,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        # PRODUCTION: Require authentication for all API endpoints
-        'rest_framework.permissions.IsAuthenticated',
+        # DEVELOPMENT: Allow unauthenticated access for testing
+        'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
