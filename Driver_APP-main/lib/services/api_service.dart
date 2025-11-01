@@ -14,8 +14,8 @@ class ApiService {
   final String? _overrideAuthToken;
 
   ApiService({String? baseUrl, String? authToken})
-    : _overrideBaseUrl = baseUrl,
-      _overrideAuthToken = authToken;
+      : _overrideBaseUrl = baseUrl,
+        _overrideAuthToken = authToken;
 
   String? get _baseUrl {
     if (_overrideBaseUrl != null) return _overrideBaseUrl;
@@ -123,7 +123,7 @@ class ApiService {
     }
 
     // Correct endpoint based on user-provided API documentation
-    final url = Uri.parse('$_baseUrl/buses/$busId/');
+    final url = Uri.parse('$_baseUrl/api/buses/$busId/');
     final headers = {
       'Authorization': 'Token $_authToken',
       'ngrok-skip-browser-warning': 'true',
@@ -190,7 +190,7 @@ class ApiService {
     }
 
     // Correct endpoint based on user-provided API documentation
-    final url = Uri.parse('$_baseUrl/buses/$busId/update-location/');
+    final url = Uri.parse('$_baseUrl/api/buses/$busId/update-location/');
     final headers = {
       'Authorization': 'Token $_authToken',
       'Content-Type': 'application/json',

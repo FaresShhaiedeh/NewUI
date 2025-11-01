@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:latlong2/latlong.dart';
 
 enum BusStatus { IN_SERVICE, DELAYED, NOT_IN_SERVICE, UNKNOWN }
@@ -92,7 +93,7 @@ class Bus {
       );
     } catch (e) {
       // If parsing fails, return a default bus at Damascus center
-      print('Error parsing bus JSON: $e');
+      debugPrint('Error parsing bus JSON: $e');
       return Bus(
         id: json['bus_id']?.toString() ?? 'unknown',
         licensePlate: json['license_plate']?.toString() ?? 'N/A',

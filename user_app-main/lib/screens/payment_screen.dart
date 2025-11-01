@@ -43,7 +43,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppColors.success.withOpacity(0.1),
+                  color: AppColors.success.withValues(alpha: 0.1),
                   borderRadius: AppBorders.small,
                 ),
                 child: Icon(
@@ -68,7 +68,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.success.withOpacity(0.1),
+                  color: AppColors.success.withValues(alpha: 0.1),
                   borderRadius: AppBorders.small,
                 ),
                 child: Column(
@@ -196,13 +196,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ),
         centerTitle: true,
         // --- 2. جعل الـ AppBar شفافًا وبدون ظل ---
-        backgroundColor: Colors.black.withOpacity(0.3),
+        backgroundColor: Colors.black.withValues(alpha: 0.3),
         elevation: 0,
         leading: IconButton(
           icon: Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withValues(alpha: 0.3),
               shape: BoxShape.circle,
             ),
             child: const Icon(Icons.arrow_back, color: Colors.white, size: 20),
@@ -228,7 +228,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     borderRadius: AppBorders.medium,
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.success.withOpacity(0.3),
+                        color: AppColors.success.withValues(alpha: 0.3),
                         blurRadius: 20,
                         spreadRadius: 5,
                       ),
@@ -238,7 +238,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     child: Icon(
                       Icons.qr_code_scanner,
                       size: 80,
-                      color: Colors.white.withOpacity(0.3),
+                      color: Colors.white.withValues(alpha: 0.3),
                     ),
                   ),
                 ),
@@ -249,7 +249,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     vertical: 12,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.7),
+                    color: Colors.black.withValues(alpha: 0.7),
                     borderRadius: AppBorders.small,
                   ),
                   child: Column(
@@ -287,3 +287,4 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 }
+

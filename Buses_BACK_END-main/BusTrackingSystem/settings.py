@@ -22,7 +22,7 @@ load_dotenv(BASE_DIR / '.env')
 # =====================================================================
 # Load from environment variables for security
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-dev-key-change-in-production')
-DEBUG = os.getenv('DEBUG', 'False') == 'True'  # PRODUCTION: Debug disabled by default
+DEBUG = os.getenv('DEBUG', 'True') == 'True'  # DEFAULT: Debug ENABLED for development
 
 # For production, set these via environment variables:
 # ALLOWED_HOSTS: comma-separated list of domain names
@@ -87,7 +87,7 @@ if DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',  # ASGI server for production WebSockets
+    'daphne',  # Re-enabled for WebSocket support (User App needs it)
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -98,7 +98,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
-    'channels',
+    'channels',  # Re-enabled for WebSocket support
 ]
 
 MIDDLEWARE = [

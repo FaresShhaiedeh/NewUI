@@ -253,7 +253,7 @@ class _MainMapScreenState extends State<MainMapScreen> {
           ),
           if (_status == MapStatus.loading)
             Container(
-              color: AppColors.background.withOpacity(0.95),
+              color: AppColors.background.withValues(alpha: 0.95),
               child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -267,7 +267,7 @@ class _MainMapScreenState extends State<MainMapScreen> {
             ),
           if (_status == MapStatus.failure)
             Container(
-              color: AppColors.background.withOpacity(0.95),
+              color: AppColors.background.withValues(alpha: 0.95),
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
@@ -368,7 +368,7 @@ class _MainMapScreenState extends State<MainMapScreen> {
                     : Border.all(color: AppColors.divider, width: 1.5),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withValues(alpha: 0.2),
                     blurRadius: 6,
                     offset: const Offset(0, 2),
                   ),
@@ -844,3 +844,4 @@ class _MainMapScreenState extends State<MainMapScreen> {
     );
   }
 }
+

@@ -458,7 +458,7 @@ def initial_data_view(request):
         # prefetch_related: للعلاقات ManyToMany
         bus_stops = BusStop.objects.select_related('location').all()
         buses = Bus.objects.select_related('current_location', 'bus_line').all()
-        bus_lines = BusLine.objects.prefetch_related('busstop_set').all()
+        bus_lines = BusLine.objects.all()  # Fixed: removed incorrect prefetch
         
         # Serialize data
         bus_stops_data = BusStopSerializer(bus_stops, many=True).data

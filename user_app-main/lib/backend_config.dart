@@ -3,4 +3,4 @@
 // Example: const String kWebSocketUrl = 'wss://abcd1234.ngrok.io/ws';
 
 const String kWebSocketUrl =
-    'wss://recognizable-abbey-untoasted.ngrok-free.dev/ws';
+    'wss://recognizable-abbey-untoasted.ngrok-free.dev/ws/bus-locations/';

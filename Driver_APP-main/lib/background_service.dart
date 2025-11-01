@@ -130,7 +130,7 @@ void onStart(ServiceInstance service) async {
           return;
         }
 
-        serverUrl = '$apiBaseUrl/buses/$busId/update-location/';
+        serverUrl = '$apiBaseUrl/api/buses/$busId/update-location/';
 
         if (service is AndroidServiceInstance) {
           service.setForegroundNotificationInfo(
@@ -196,7 +196,7 @@ void onStart(ServiceInstance service) async {
           debugPrint('$st');
           // Periodic flush to retry queued points even when the live stream isn't available
           periodicFlushTimer =
-              Timer.periodic(const Duration(seconds: 30), (_) async {
+              Timer.periodic(const Duration(seconds: 3), (_) async {
             await processQueue();
           });
         }

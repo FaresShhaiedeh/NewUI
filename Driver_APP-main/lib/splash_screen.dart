@@ -1,6 +1,5 @@
 import 'package:driver_app/background_service.dart';
 import 'package:driver_app/login_screen.dart';
-import 'package:driver_app/map_screen.dart';
 import 'package:driver_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -80,30 +79,26 @@ class _SplashScreenState extends State<SplashScreen> {
         // starting the background service later when they log in.
       }
 
-      // 4. قراءة البيانات المحفوظة لتحديد الشاشة التالية
+      // 4. تهيئة SharedPreferences (لكن لا نستخدمها للتوجيه التلقائي)
       debugPrint('Splash: SharedPreferences.getInstance start');
       final prefs = await SharedPreferences.getInstance();
       debugPrint('Splash: SharedPreferences.getInstance done');
-      final String? busId = prefs.getString('active_bus_id');
-      final String? lineId = prefs.getString('active_line_id');
+
+      // ⚠️ إصلاح: نحذف أي جلسة محفوظة عند فتح التطبيق لمنع الـ redirect loop
+      await prefs.remove('active_bus_id');
+      await prefs.remove('active_line_id');
+      debugPrint(
+          '🧹 Splash: Cleared any saved session to prevent redirect loop');
 
       // التأكد من أن الواجهة ما زالت موجودة قبل الانتقال
       if (!mounted) return;
 
-      // 5. الانتقال إلى الشاشة المناسبة
-      if (busId != null && lineId != null) {
-        // إذا كان التتبع فعالاً، اذهب مباشرة إلى شاشة التتبع
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => MapScreen(busId: busId, lineId: lineId),
-          ),
-        );
-      } else {
-        // وإلا، اذهب إلى شاشة تسجيل الدخول
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => LoginScreen()),
-        );
-      }
+      // 5. دائماً نذهب إلى شاشة تسجيل الدخول (بدون auto-login)
+      debugPrint('🔐 Splash: Navigating to LoginScreen');
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        (route) => false, // حذف كل الـ history
+      );
     } catch (e, st) {
       // سجل الاستثناء لتشخيص المشكلة
       debugPrint('Splash initialization failed: $e');
@@ -148,7 +143,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primary.withOpacity(0.4),
+                          color: AppColors.primary.withValues(alpha: 0.4),
                           blurRadius: 20,
                           spreadRadius: 5,
                         ),
@@ -271,12 +266,10 @@ class _LoadingDotsState extends State<LoadingDots>
           animation: _controller,
           builder: (context, child) {
             final value = ((_controller.value - (index * 0.2)) % 1.0);
-            final scale = value < 0.5
-                ? 1.0 + (value * 0.6)
-                : 1.3 - ((value - 0.5) * 0.6);
-            final opacity = value < 0.5
-                ? 0.4 + (value * 1.2)
-                : 1.0 - ((value - 0.5) * 1.2);
+            final scale =
+                value < 0.5 ? 1.0 + (value * 0.6) : 1.3 - ((value - 0.5) * 0.6);
+            final opacity =
+                value < 0.5 ? 0.4 + (value * 1.2) : 1.0 - ((value - 0.5) * 1.2);
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),

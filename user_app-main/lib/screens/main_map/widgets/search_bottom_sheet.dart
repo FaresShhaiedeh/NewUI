@@ -80,7 +80,7 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
         _isLoading = false;
       });
     } catch (e) {
-      print('[Search] Error: $e');
+      debugPrint('[Search] Error: $e');
       setState(() {
         _results = [];
         _isLoading = false;
@@ -336,7 +336,7 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
         width: 48,
         height: 48,
         decoration: BoxDecoration(
-          color: iconColor.withOpacity(0.1),
+          color: iconColor.withValues(alpha: 0.1),
           borderRadius: AppBorders.medium,
         ),
         child: Icon(icon, color: iconColor, size: 24),
@@ -353,7 +353,7 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
           ? Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: AppColors.success.withOpacity(0.1),
+                color: AppColors.success.withValues(alpha: 0.1),
                 borderRadius: AppBorders.small,
               ),
               child: Row(
@@ -380,7 +380,7 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
           ? Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: AppColors.info.withOpacity(0.1),
+                color: AppColors.info.withValues(alpha: 0.1),
                 borderRadius: AppBorders.small,
               ),
               child: Text(

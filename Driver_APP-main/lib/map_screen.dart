@@ -70,7 +70,7 @@ class _MapScreenState extends State<MapScreen> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.textOnPrimary.withOpacity(0.5),
+                    color: AppColors.textOnPrimary.withValues(alpha: 0.5),
                     blurRadius: 8,
                     spreadRadius: 2,
                   ),
@@ -129,7 +129,7 @@ class _MapScreenState extends State<MapScreen> {
                         Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: AppColors.success.withOpacity(0.1),
+                            color: AppColors.success.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
@@ -223,7 +223,7 @@ class _MapScreenState extends State<MapScreen> {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: AppBorders.small,
           ),
           child: Icon(icon, size: 20, color: color),
@@ -335,8 +335,10 @@ class _MapScreenState extends State<MapScreen> {
       ),
     );
 
-    navigator.pushReplacement(
+    // استخدام pushAndRemoveUntil لحذف كل الـ history ومنع الـ redirect loop
+    navigator.pushAndRemoveUntil(
       MaterialPageRoute(builder: (_) => const LoginScreen()),
+      (route) => false,
     );
   }
 }

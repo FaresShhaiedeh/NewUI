@@ -19,6 +19,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _busIdController = TextEditingController();
   bool _isLoading = false;
+  bool _isProcessing = false; // 🔒 قفل فوري بدون setState
   final ApiService _apiService = ApiService();
 
   @override
@@ -65,32 +66,47 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
-    final bool isGpsReady = await _handleGpsService();
-    if (!isGpsReady) {
+    // ⚠️ منع الضغط المتكرر (debouncing) - قفل فوري بمتغير عادي
+    if (_isProcessing) {
+      debugPrint('⚠️ Login already in progress, ignoring duplicate tap');
       return;
     }
 
+    // 🔒 قفل فوري - لا ينتظر setState
+    _isProcessing = true;
+
+    // فحص بسيط قبل بدء العملية
     if (_busIdController.text.isEmpty) {
+      _isProcessing = false; // فك القفل
       _showErrorDialog('خطأ في الإدخال', 'الرجاء إدخال رقم الحافلة.');
       return;
     }
 
+    // 🎨 تحديث UI (يمكن أن يتأخر قليلاً لكن القفل الفوري أعلاه يحمينا)
     setState(() {
       _isLoading = true;
     });
+    debugPrint('🔐 LoginScreen: Starting login process...');
 
     try {
+      // فحص GPS بعد قفل الزر
+      final bool isGpsReady = await _handleGpsService();
+      if (!isGpsReady) {
+        _isProcessing = false; // 🔓 فك القفل
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+
       final busId = _busIdController.text;
       final busData = await _apiService.getBusData(busId);
       if (!mounted) return;
       final lineId = busData['bus_line']['route_id'];
 
-      // --- هذا هو التعديل الرئيسي ---
-      // حفظ البيانات في الذاكرة الدائمة عند نجاح تسجيل الدخول
+      // لا نحفظ الجلسة - كل مرة تسجيل دخول جديد لمنع الـ redirect loop
+      // لكن نحتاج prefs للإعدادات الأخرى (API config)
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('active_bus_id', busId);
-      await prefs.setString('active_line_id', lineId.toString());
-      // --- نهاية التعديل ---
 
       final service = FlutterBackgroundService();
       var isRunning = await service.isRunning();
@@ -146,10 +162,16 @@ class _LoginScreenState extends State<LoginScreen> {
       // Use the context synchronously: check mounted immediately and
       // avoid capturing the surrounding BuildContext in the route builder.
       if (!mounted) return;
+
+      debugPrint('✅ LoginScreen: Login successful! Navigating to MapScreen...');
+      debugPrint('   Bus ID: $busId, Line ID: $lineId');
+
       final route = MaterialPageRoute(
         builder: (_) => MapScreen(busId: busId, lineId: lineId),
       );
-      Navigator.of(context).pushReplacement(route);
+      // استخدام pushAndRemoveUntil لحذف كل الـ history ومنع الـ redirect loop
+      Navigator.of(context).pushAndRemoveUntil(route, (route) => false);
+      debugPrint('✅ LoginScreen: Navigation completed');
     } catch (e) {
       if (!mounted) return;
       _showErrorDialog(
@@ -157,6 +179,8 @@ class _LoginScreenState extends State<LoginScreen> {
         e.toString().replaceFirst("Exception: ", ""),
       );
     } finally {
+      // 🔓 فك القفل في جميع الحالات
+      _isProcessing = false;
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -340,9 +364,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.info.withOpacity(0.1),
+                    color: AppColors.info.withValues(alpha: 0.1),
                     borderRadius: AppBorders.medium,
-                    border: Border.all(color: AppColors.info.withOpacity(0.3)),
+                    border: Border.all(
+                        color: AppColors.info.withValues(alpha: 0.3)),
                   ),
                   child: Row(
                     children: [

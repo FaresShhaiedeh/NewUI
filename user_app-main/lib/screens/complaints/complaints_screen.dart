@@ -298,7 +298,7 @@ class _ComplaintsViewState extends State<ComplaintsView> {
                                 borderRadius: AppBorders.medium,
                               ),
                               elevation: 2,
-                              shadowColor: AppColors.primary.withOpacity(0.3),
+                              shadowColor: AppColors.primary.withValues(alpha: 0.3),
                             ),
                           );
                         },
@@ -314,3 +314,4 @@ class _ComplaintsViewState extends State<ComplaintsView> {
     );
   }
 }
+

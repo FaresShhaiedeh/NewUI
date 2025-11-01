@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../config/app_config.dart';
 import '../models/search_result.dart';
@@ -22,7 +23,7 @@ class SearchService {
         return [];
       }
 
-      List<SearchResult> results = [];
+      final List<SearchResult> results = [];
 
       // نجلب البيانات حسب الفئة
       if (category == SearchCategory.all) {
@@ -41,7 +42,7 @@ class SearchService {
 
       return results;
     } catch (e) {
-      print('[SearchService] Error: $e');
+      debugPrint('[SearchService] Error: $e');
       return [];
     }
   }
@@ -57,25 +58,27 @@ class SearchService {
       };
 
       final uri = Uri.parse('$_baseUrl/api/$endpoint/');
-      print('[SearchService] Fetching: $uri');
+      debugPrint('[SearchService] Fetching: $uri');
 
       final response = await http.get(uri, headers: headers);
 
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {
-        print('[SearchService] Error ${response.statusCode}: ${response.body}');
+        debugPrint(
+          '[SearchService] Error ${response.statusCode}: ${response.body}',
+        );
         return null;
       }
     } catch (e) {
-      print('[SearchService] Fetch error: $e');
+      debugPrint('[SearchService] Fetch error: $e');
       return null;
     }
   }
 
   /// معالجة كل البيانات
   List<SearchResult> _parseAllData(dynamic data, String query) {
-    List<SearchResult> results = [];
+    final List<SearchResult> results = [];
 
     // محطات الباص
     if (data['bus_stops'] != null) {
@@ -113,7 +116,7 @@ class SearchService {
     SearchCategory category,
     String query,
   ) {
-    List<SearchResult> results = [];
+    final List<SearchResult> results = [];
 
     if (data is List) {
       for (var item in data) {
@@ -162,7 +165,7 @@ class SearchService {
   }) {
     if (query.trim().isEmpty) return [];
 
-    List<SearchResult> results = [];
+    final List<SearchResult> results = [];
 
     if (category == SearchCategory.all || category == SearchCategory.busStops) {
       for (var stop in busStops) {
